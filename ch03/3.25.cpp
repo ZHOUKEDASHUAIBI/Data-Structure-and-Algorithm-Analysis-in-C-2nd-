@@ -1,4 +1,4 @@
-/* Queue In Array*/
+/* a. Queue in Array */
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -23,7 +23,8 @@ int* succ(int* index, queue Q);
 void PrintQueue(queue Q);
 
 int main()
-{
+{	
+	/* Test Case */
 	queue Q;
 	Q = CreateQueue(5);
 	printf("%d\n",IsEmpty(Q));
@@ -122,5 +123,132 @@ void PrintQueue(queue Q)
 			i = (i+1) % (Q->capacity);
 		}
 		printf("%d\n",Q->Array[i]);
+	}
+}
+
+
+/* b. Queue in Linkedlist */
+#include<stdio.h> 
+#include<stdlib.h>
+
+struct Node
+{
+	int Element;
+	struct Node* next;
+};
+
+struct QNode
+{
+	struct Node* front;
+	struct Node* rear;	
+};
+
+typedef QNode* queue;
+typedef Node* node;
+
+queue CreateQueue();
+void MakeEmpty(queue Q);
+int IsEmpty(queue Q);
+void Enqueue(int x, queue Q);
+void Dequeue(queue Q);
+void PrintQueue(queue Q);
+
+int main()
+{	
+	/* Test Case */
+	queue Q;
+	Q = CreateQueue();
+	//printf("%d",IsEmpty(Q));
+	Dequeue(Q);
+	Enqueue(2,Q);
+	Enqueue(1,Q);
+	Enqueue(5,Q);
+	Enqueue(9,Q);
+	Enqueue(3,Q);
+	PrintQueue(Q);
+	
+	Dequeue(Q);
+	PrintQueue(Q);
+	Dequeue(Q);
+	PrintQueue(Q);
+	Dequeue(Q);
+	PrintQueue(Q);
+	Dequeue(Q);
+	PrintQueue(Q);
+	Dequeue(Q);
+	PrintQueue(Q);
+	printf("%d",IsEmpty(Q));
+	return 0;
+}
+
+void MakeEmpty(queue Q)
+{
+	Q->front = (node)malloc(sizeof(struct Node));
+	Q->rear = (node)malloc(sizeof(struct Node));
+	Q->front = NULL;
+	Q->rear = NULL;
+}
+
+queue CreateQueue()
+{
+	queue Q;
+	Q = (queue)malloc(sizeof(struct QNode));
+	MakeEmpty(Q);
+	return Q;
+}
+
+int IsEmpty(queue Q)
+{
+	return Q->front == NULL;
+}
+
+void Enqueue(int x, queue Q)
+{
+	node tmp;
+	tmp = (node)malloc(sizeof(struct Node));
+	tmp->Element = x;
+	if(IsEmpty(Q))
+	{
+		Q->front = tmp;
+		tmp->next = Q->rear;
+		Q->rear = tmp;
+	}
+	else
+	{
+		tmp->next = Q->rear->next;
+		Q->rear->next = tmp;
+		Q->rear = Q->rear->next; 
+	} 
+}
+
+void Dequeue(queue Q)
+{
+	if(IsEmpty(Q))
+	{
+		printf("Queue is Empty\n");
+	}
+	else
+	{
+		node temp;
+		temp = Q->front;
+		Q->front = Q->front->next;
+		free(temp);
+	}
+}
+
+void PrintQueue(queue Q)
+{
+	node tmp;
+	tmp = Q->front;
+	if(IsEmpty(Q))
+		printf("[Empty]\n");
+	else
+	{
+		while(tmp != Q->rear)
+		{
+			printf("%d ",tmp->Element);
+			tmp = tmp->next;	
+		} 
+		printf("%d\n",tmp->Element);
 	}
 }
