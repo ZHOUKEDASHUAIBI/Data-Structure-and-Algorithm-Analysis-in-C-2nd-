@@ -1,6 +1,7 @@
 /* 
    Running Time O(L+P)
    We use static variable i to record position. So that we can avoid doing loop everytime.
+   Condition : The LinkedList should have a head.
 */
 
 void PrintLots(list L, list P)
